@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ParkBee.Assessment.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AccountController : Controller
     {
         private readonly IConfiguration _configuration;

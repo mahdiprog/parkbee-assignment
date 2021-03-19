@@ -1,9 +1,9 @@
-﻿using System;
+﻿using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation.Results;
 
-namespace Triskele.Common.Application.Exceptions
+namespace ParkBee.Assessment.Application.Exceptions
 {
     public class ValidationException : Exception
     {

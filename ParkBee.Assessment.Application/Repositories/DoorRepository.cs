@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ParkBee.Assessment.Application.Interfaces;
-using ParkBee.Assessment.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using ParkBee.Assessment.Application.Interfaces;
+using ParkBee.Assessment.Domain.Models;
 
-namespace ReservationService.Application.Repositories
+namespace ParkBee.Assessment.Application.Repositories
 {
     public class DoorRepository : IDoorRepository
     {

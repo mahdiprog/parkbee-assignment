@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ParkBee.Assessment.Domain.Models;
 
-namespace ReservationService.Infra.Configurations
+namespace ParkBee.Assessment.Infra.Configurations
 {
     public class DoorConfig : IEntityTypeConfiguration<Door>
     {

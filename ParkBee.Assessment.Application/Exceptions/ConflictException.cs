@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Triskele.Common.Application.Exceptions
+namespace ParkBee.Assessment.Application.Exceptions
 {
     public class ConflictException : Exception
     {

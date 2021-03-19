@@ -1,5 +1,4 @@
-﻿using Meetings.Infra.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ParkBee.Assessment.Application.Interfaces;
 using ParkBee.Assessment.Domain.Models;
 using System.Collections.Generic;

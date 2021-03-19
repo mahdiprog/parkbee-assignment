@@ -10,9 +10,11 @@ namespace ParkBee.Assessment.Infra
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IPingService, PingService>();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("parkbee"));
             //options.UseSqlServer(configuration.GetConnectionString("ParkBeeDbContext")));
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             return services;
         }
     }

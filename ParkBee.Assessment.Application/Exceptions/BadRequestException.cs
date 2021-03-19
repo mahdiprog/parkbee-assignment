@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Triskele.Common.Application.Exceptions
+namespace ParkBee.Assessment.Application.Exceptions
 {
     public class BadRequestException : Exception
     {

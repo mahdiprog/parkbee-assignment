@@ -8,6 +8,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ParkBee.Assessment.Application.Interfaces;
 using ParkBee.Assessment.Application.Services;
 using ParkBee.Assessment.Application.Services.CronJobs;
 

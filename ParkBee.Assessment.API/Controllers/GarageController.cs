@@ -1,11 +1,19 @@
-using ParkBee.Assessment.API;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ParkBee.Assessment.Application.Garages;
 
-public class GarageController
+namespace ParkBee.Assessment.API.Controllers
 {
-    private ApplicationDbContext _context;
-
-    public GarageController()
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class GarageController:BaseController
     {
-        _context = new ApplicationDbContext();
+        [HttpGet]
+        public async Task<GarageDto> GetMyGarageDetails()
+        {
+            return await Mediator.Send(new GetGarageDetailsQuery()).ConfigureAwait(false);
+        }
     }
 }

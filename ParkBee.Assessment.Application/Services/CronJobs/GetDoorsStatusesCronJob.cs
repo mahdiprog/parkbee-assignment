@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ParkBee.Assessment.Application.Interfaces;
 
@@ -12,19 +12,14 @@ namespace ParkBee.Assessment.Application.Services.CronJobs
     public class GetDoorsStatusesCronJob : CronJobService
     {
         private readonly ILogger<GetDoorsStatusesCronJob> _logger;
-        private readonly IDoorCheckService _doorCheckService;
-        private readonly IApplicationDbContext _dbContext;
-        private readonly IConfiguration _configuration;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public GetDoorsStatusesCronJob(IScheduleConfig<GetDoorsStatusesCronJob> config,
-            ILogger<GetDoorsStatusesCronJob> logger,
-            IConfiguration configuration, IDoorCheckService doorCheckService, IApplicationDbContext dbContext)
+            ILogger<GetDoorsStatusesCronJob> logger, IServiceScopeFactory serviceScopeFactory)
             : base(config.CronExpression, config.TimeZoneInfo)
         {
             _logger = logger;
-            _configuration = configuration;
-            _doorCheckService = doorCheckService;
-            _dbContext = dbContext;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -35,11 +30,14 @@ namespace ParkBee.Assessment.Application.Services.CronJobs
 
         public override async Task DoWork(CancellationToken cancellationToken)
         {
-            var doors = await _dbContext.GetDoors();
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetService<IApplicationDbContext>();
+            var doorCheckService = scope.ServiceProvider.GetService<IDoorCheckService>();
+            var doors = await dbContext.DoorRepository.GetDoors();
             foreach (var door in doors)
             {
-                var isOnline = await _doorCheckService.GetDoorStatus(door.DoorId);
-                await _dbContext.ChangeDoorStatus(door.DoorId, isOnline);
+                var isOnline = await doorCheckService.GetDoorStatus(door);
+                await dbContext.DoorRepository.ChangeDoorStatus(door.DoorId, isOnline);
             }
         }
 

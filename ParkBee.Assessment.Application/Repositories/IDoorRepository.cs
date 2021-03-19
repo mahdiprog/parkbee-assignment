@@ -1,8 +1,8 @@
-﻿using ParkBee.Assessment.Domain.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ParkBee.Assessment.Domain.Models;
 
-namespace ReservationService.Application.Repositories
+namespace ParkBee.Assessment.Application.Repositories
 {
     public interface IDoorRepository
     {

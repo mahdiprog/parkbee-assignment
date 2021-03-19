@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using ParkBee.Assessment.Application.Exceptions;
 
 namespace ParkBee.Assessment.API.Common
 {
@@ -35,8 +36,8 @@ namespace ParkBee.Assessment.API.Common
             var code = HttpStatusCode.InternalServerError;
 
             var result = string.Empty;
-            if (exception is RequestException)
-                exception = exception.InnerException;
+            //if (exception is RequestException)
+            //    exception = exception.InnerException;
             switch (exception)
             {
                 case ValidationException validationException:
@@ -61,7 +62,7 @@ namespace ParkBee.Assessment.API.Common
             context.Response.StatusCode = (int)code;
 
 
-            if (result == string.Empty)
+            if (string.IsNullOrEmpty(result))
             {
                 Exception exc = null;
 #if(DEBUG)
