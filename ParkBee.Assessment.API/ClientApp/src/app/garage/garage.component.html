@@ -1,0 +1,13 @@
+<div class="card" style="width: 18rem;" >
+  <div class="card-body">
+    <h5 class="card-title">{{garage.name}}</h5>
+    <p class="card-text">{{garage.address}}    </p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let door of garage.doors" class="list-group-item">{{door.name}}
+      <span [class]="'badge badge-'+(door.isOnline?'success':'danger')">{{door.isOnline?"Online":"Offline"}}</span>
+      <button type="button" class="btn btn-primary btn-sm float-right">Refresh</button>
+    </li>
+  </ul>
+
+</div>
