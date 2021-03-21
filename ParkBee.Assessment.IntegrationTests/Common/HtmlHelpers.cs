@@ -6,7 +6,7 @@ using AngleSharp;
 using AngleSharp.Html.Dom;
 using AngleSharp.Io;
 
-namespace RazorPagesProject.Tests.Helpers
+namespace ParkBee.Assessment.IntegrationTests.Common
 {
     public class HtmlHelpers
     {

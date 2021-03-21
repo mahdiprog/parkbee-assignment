@@ -52,7 +52,7 @@ namespace ParkBee.Assessment.Application.UnitTests.Garages
 
             // Act
             // check if throws exception on door not exists
-            await Assert.ThrowsAsync<PrimaryKeyNotFoundException>(()=>sut.Handle(new RefreshDoorStatusCommand { DoorId = 3 }, CancellationToken.None));
+            await Assert.ThrowsAsync<NotFoundException>(()=>sut.Handle(new RefreshDoorStatusCommand { DoorId = 3 }, CancellationToken.None));
 
             // check if it returns correct status
             Assert.False(await sut.Handle(new RefreshDoorStatusCommand { DoorId = 1 }, CancellationToken.None));

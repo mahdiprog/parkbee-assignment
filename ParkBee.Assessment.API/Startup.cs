@@ -63,11 +63,11 @@ namespace ParkBee.Assessment.API
 
                     Type = SecuritySchemeType.OAuth2
                 });
-                 c.AddFluentValidationRules();
-                 // Set the comments path for the Swagger JSON and UI.
-                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                 c.IncludeXmlComments(xmlPath);
+                c.AddFluentValidationRules();
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 c.CustomSchemaIds(i => i.FullName);
             });
 
@@ -107,7 +107,7 @@ namespace ParkBee.Assessment.API
             {
                 app.UseSpaStaticFiles();
             }
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -127,18 +127,20 @@ namespace ParkBee.Assessment.API
                     pattern: "{controller}/{action=Index}/{id?}");
             });
             app.UseCustomExceptionHandler();
-            app.UseSpa(spa =>
+            if (env.IsDevelopment())
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
+                app.UseSpa(spa =>
                 {
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                    spa.Options.SourcePath = "ClientApp";
+
+
                     spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+
+                });
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
 using Xunit;
 
-namespace RazorPagesProject.Tests.Helpers
+namespace ParkBee.Assessment.IntegrationTests.Common
 {
     public static class HttpClientExtensions
     {
