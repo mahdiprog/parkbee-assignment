@@ -33,7 +33,7 @@ namespace ParkBee.Assessment.Application.Services.CronJobs
             using var scope = _serviceScopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetService<IApplicationDbContext>();
             var doorCheckService = scope.ServiceProvider.GetService<IDoorCheckService>();
-            var doors = await dbContext.DoorRepository.GetDoors();
+            var doors = await dbContext.DoorRepository.GetAllDoors();
             foreach (var door in doors)
             {
                 var isOnline = await doorCheckService.GetDoorStatus(door);

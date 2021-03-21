@@ -1,22 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkBee.Assessment.Application.Interfaces;
 using ParkBee.Assessment.Domain.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ParkBee.Assessment.Infra.Persistence
 {
     public partial class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        public ApplicationDbContext()
+        private readonly ICurrentUserService _currentUserService;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
         }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options, 
+            ICurrentUserService currentUserService)
+            : base(options)
         {
+            _currentUserService = currentUserService;
         }
+
 
         public DbSet<Garage> Garages { get; set; }
         public DbSet<Door> Doors { get; set; }

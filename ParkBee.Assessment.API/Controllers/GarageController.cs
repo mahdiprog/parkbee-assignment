@@ -15,5 +15,11 @@ namespace ParkBee.Assessment.API.Controllers
         {
             return await Mediator.Send(new GetGarageDetailsQuery()).ConfigureAwait(false);
         }
+
+        [HttpPost("Refresh/{doorId:int}")]
+        public async Task<bool> RefreshDoorStatus(int doorId)
+        {
+            return await Mediator.Send(new RefreshDoorStatusCommand{DoorId = doorId}).ConfigureAwait(false);
+        }
     }
 }

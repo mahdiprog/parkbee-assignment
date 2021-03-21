@@ -4,9 +4,9 @@
     <p class="card-text">{{garage.address}}    </p>
   </div>
   <ul class="list-group list-group-flush">
-    <li *ngFor="let door of garage.doors" class="list-group-item">{{door.name}}
+    <li *ngFor="let door of garage.doors;trackBy:trackByIdentity" class="list-group-item">{{door.name}}
       <span [class]="'badge badge-'+(door.isOnline?'success':'danger')">{{door.isOnline?"Online":"Offline"}}</span>
-      <button type="button" class="btn btn-primary btn-sm float-right">Refresh</button>
+      <button type="button" class="btn btn-primary btn-sm float-right" (click)="refreshDoorStatus(door.doorId)">Refresh</button>
     </li>
   </ul>
 

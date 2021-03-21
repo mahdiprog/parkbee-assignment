@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { AppComponent } from './app.component';
 import { GarageComponent } from './garage/garage.component';
 import { GarageService } from './garage/garage.service';
@@ -13,7 +14,6 @@ import { TokenStorageService } from './services/token-storage.service';
 import { LocalStorage } from './shared/local-storage';
 import { SessionStorage } from './shared/session-storage';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,13 +23,15 @@ import { SessionStorage } from './shared/session-storage';
   ],
   imports: [
     //CoreModule,
+    // for HttpClient use:
+    LoadingBarHttpClientModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
     { path: '', component: HomeComponent, pathMatch: 'full' },
     { path: 'garage', component: GarageComponent }
-], { relativeLinkResolution: 'legacy' })
+], { relativeLinkResolution: 'legacy' }),
   ],
   providers: [
     AuthService, GarageService,

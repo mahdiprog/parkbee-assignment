@@ -13,9 +13,16 @@ export class GarageService {
   constructor(private httpClient: HttpClient,
     private token: TokenStorageService<UserData>,
   ) { }
-  getGarageDetails (): Observable<GarageDto>{
+  getGarageDetails (): Observable<GarageDto> {
     return this.httpClient.get<GarageDto>('/api/garage', {
       headers: { "Authorization": 'Bearer ' + this.token.getToken() }
     });
-}
+  }
+  refreshDoor (doorId): Observable<boolean> {
+    return this.httpClient.post<boolean>(`/api/garage/refresh/${doorId}`,
+      { },
+      {
+        headers: { "Authorization": 'Bearer ' + this.token.getToken() }
+      });
+  }
 }
