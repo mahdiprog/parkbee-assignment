@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ParkBee.Assessment.Application.Interfaces;
 using ParkBee.Assessment.Domain.Models;
@@ -16,13 +10,10 @@ namespace ParkBee.Assessment.Application.Services
     public class DoorCheckService : IDoorCheckService
     {
         private readonly IPingService _pingService;
-        private readonly ILogger<DoorCheckService> _logger;
 
-        public DoorCheckService(IPingService pingService, IConfiguration configuration,
-            ILogger<DoorCheckService> logger)
+        public DoorCheckService(IPingService pingService)
         {
-            _pingService = pingService;
-            _logger = logger;
+            _pingService = pingService ?? throw new ArgumentNullException(nameof(pingService));
         }
 
         /// <summary>

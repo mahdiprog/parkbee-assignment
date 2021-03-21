@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using ParkBee.Assessment.Application.Garages;
+using ParkBee.Assessment.Application.Garages.Contracts;
 using ParkBee.Assessment.Domain.Models;
 
 namespace ParkBee.Assessment.Application

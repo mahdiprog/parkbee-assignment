@@ -22,7 +22,7 @@ namespace ParkBee.Assessment.Infra.Configurations
             builder.HasOne(d => d.Garage)
                 .WithMany(p => p.Doors)
                 .HasForeignKey(d => d.GarageId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

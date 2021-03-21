@@ -18,8 +18,8 @@ namespace ParkBee.Assessment.Application.Services.CronJobs
             ILogger<GetDoorsStatusesCronJob> logger, IServiceScopeFactory serviceScopeFactory)
             : base(config.CronExpression, config.TimeZoneInfo)
         {
-            _logger = logger;
-            _serviceScopeFactory = serviceScopeFactory;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)

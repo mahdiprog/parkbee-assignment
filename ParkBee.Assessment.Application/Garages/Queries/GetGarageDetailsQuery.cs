@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ParkBee.Assessment.Application.Exceptions;
+using ParkBee.Assessment.Application.Garages.Contracts;
 using ParkBee.Assessment.Application.Interfaces;
 
-namespace ParkBee.Assessment.Application.Garages
+namespace ParkBee.Assessment.Application.Garages.Queries
 {
     public class GetGarageDetailsQuery:IRequest<GarageDto>
     {
@@ -31,11 +29,13 @@ namespace ParkBee.Assessment.Application.Garages
 
         public async Task<GarageDto> Handle(GetGarageDetailsQuery request, CancellationToken cancellationToken)
         {
+            // get the garage which current user is it's owner
             var garage = await _dbContext.Garages.Include(g => g.Doors)
                 .ThenInclude(d => d.DoorStatuses.OrderByDescending(p => p.ChangeDate).Take(1))
                 .FirstOrDefaultAsync(g => g.GarageId == _currentUserService.GarageId, cancellationToken: cancellationToken);
             if (garage == null)
-                throw new PrimaryKeyNotFoundException($"Garage with Id {_currentUserService.GarageId} not found");
+                throw new NotFoundException($"Garage with Id {_currentUserService.GarageId} not found");
+
             return _mapper.Map<GarageDto>(garage);
         }
     }

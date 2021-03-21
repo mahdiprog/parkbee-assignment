@@ -20,7 +20,7 @@ namespace ParkBee.Assessment.Infra.Configurations
             builder.HasOne(d => d.Door)
                 .WithMany(p => p.DoorStatuses)
                 .HasForeignKey(d => d.DoorId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CryptoRate.Application\CryptoRate.Application.csproj" />
+    <ProjectReference Include="..\ParkBee.Assessment.Application\ParkBee.Assessment.Application.csproj" />
+    <ProjectReference Include="..\ParkBee.Assessment.Infra\ParkBee.Assessment.Infra.csproj" />
   </ItemGroup>
 
   <ItemGroup>
