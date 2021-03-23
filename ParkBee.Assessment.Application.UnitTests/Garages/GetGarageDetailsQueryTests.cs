@@ -21,11 +21,11 @@ namespace ParkBee.Assessment.Application.UnitTests.Garages
         private const int GarageId = 1;
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-          private readonly Mock<ICurrentUserService> _currentUserServiceMock;
+          private readonly Mock<ICurrentUserContext> _currentUserServiceMock;
 
         public GetGarageDetailsQueryTests()
         {
-            _currentUserServiceMock = new Mock<ICurrentUserService>();
+            _currentUserServiceMock = new Mock<ICurrentUserContext>();
             _currentUserServiceMock.Setup(m => m.GarageId).Returns(GarageId);
             _dbContext = ApplicationDbContextFactory.Create(_currentUserServiceMock.Object);
 

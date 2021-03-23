@@ -11,12 +11,12 @@ namespace ParkBee.Assessment.Application.Repositories
     public class DoorRepository : IDoorRepository
     {
         private readonly IApplicationDbContext _dbContext;
-        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrentUserContext _currentUserContext;
 
-        public DoorRepository(IApplicationDbContext dbContext, ICurrentUserService currentUserService)
+        public DoorRepository(IApplicationDbContext dbContext, ICurrentUserContext currentUserContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _currentUserContext = currentUserContext ?? throw new ArgumentNullException(nameof(currentUserContext));
         }
         /// <summary>
         /// Get All available doors
@@ -34,7 +34,7 @@ namespace ParkBee.Assessment.Application.Repositories
         public async Task<Door> GetDoorWithLatestStatus(int doorId)
         {
             return await _dbContext.Doors.Include(d => d.DoorStatuses.OrderByDescending(p => p.ChangeDate).Take(1))
-                .FirstOrDefaultAsync(d => d.DoorId == doorId && d.Garage.GarageId == _currentUserService.GarageId);
+                .FirstOrDefaultAsync(d => d.DoorId == doorId && d.Garage.GarageId == _currentUserContext.GarageId);
         }
         /// <summary>
         /// Set door status

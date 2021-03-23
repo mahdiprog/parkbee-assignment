@@ -25,9 +25,9 @@ namespace ParkBee.Assessment.Application.UnitTests.Garages
 
         public RefreshDoorStatusCommandTests()
         {
-            var currentUserServiceMock = new Mock<ICurrentUserService>();
-            currentUserServiceMock.Setup(m => m.GarageId).Returns(1);
-            _dbContext = ApplicationDbContextFactory.Create(currentUserServiceMock.Object);
+            var currentUserContextMock = new Mock<ICurrentUserContext>();
+            currentUserContextMock.Setup(m => m.GarageId).Returns(1);
+            _dbContext = ApplicationDbContextFactory.Create(currentUserContextMock.Object);
 
             _doorCheckServiceMock = new Mock<IDoorCheckService>(); 
         }

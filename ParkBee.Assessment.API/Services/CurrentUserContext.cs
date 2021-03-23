@@ -5,9 +5,9 @@ using ParkBee.Assessment.Application.Interfaces;
 
 namespace ParkBee.Assessment.API.Services
 {
-    public class CurrentUserService : ICurrentUserService
+    public class CurrentUserContext : ICurrentUserContext
     {
-        public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+        public CurrentUserContext(IHttpContextAccessor httpContextAccessor)
         {
             Name = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
             GarageId = Convert.ToInt32(httpContextAccessor.HttpContext?.User?.FindFirstValue(ParkBeeClaimTypes.GarageId));

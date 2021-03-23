@@ -6,7 +6,7 @@ namespace ParkBee.Assessment.Infra.Persistence
 {
     public partial class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrentUserContext _currentUserContext;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -15,10 +15,10 @@ namespace ParkBee.Assessment.Infra.Persistence
 
         public ApplicationDbContext(
             DbContextOptions<ApplicationDbContext> options, 
-            ICurrentUserService currentUserService)
+            ICurrentUserContext currentUserContext)
             : base(options)
         {
-            _currentUserService = currentUserService;
+            _currentUserContext = currentUserContext;
         }
 
 

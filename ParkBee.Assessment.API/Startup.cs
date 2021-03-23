@@ -71,7 +71,7 @@ namespace ParkBee.Assessment.API
                 c.CustomSchemaIds(i => i.FullName);
             });
 
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ICurrentUserContext, CurrentUserContext>();
             services.AddSingleton(Configuration);
             services.AddHttpContextAccessor();
 

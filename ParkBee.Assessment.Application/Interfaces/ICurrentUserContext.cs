@@ -1,7 +1,7 @@
 ﻿
 namespace ParkBee.Assessment.Application.Interfaces
 {
-    public interface ICurrentUserService
+    public interface ICurrentUserContext
     {
         string Name { get; }
         int GarageId { get; }

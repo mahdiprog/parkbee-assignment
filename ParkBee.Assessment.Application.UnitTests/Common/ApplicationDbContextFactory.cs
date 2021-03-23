@@ -10,7 +10,7 @@ namespace ParkBee.Assessment.Application.UnitTests.Common
 {
     public class ApplicationDbContextFactory
     {
-        public static ApplicationDbContext Create(ICurrentUserService currentUserService)
+        public static ApplicationDbContext Create(ICurrentUserContext currentUserService)
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())

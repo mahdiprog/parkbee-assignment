@@ -22,23 +22,23 @@ namespace ParkBee.Assessment.Application.UnitTests.Repositories
         private const int GarageId = 1;
 
         private readonly ApplicationDbContext _dbContext;
-        private readonly Mock<ICurrentUserService> _currentUserServiceMock;
+        private readonly Mock<ICurrentUserContext> _currentUserContextMock;
         private readonly IDoorRepository _repo;
 
 
         public DoorRepositoryTests()
         {
-            _currentUserServiceMock = new Mock<ICurrentUserService>();
-            _currentUserServiceMock.Setup(m => m.GarageId).Returns(1);
-            _dbContext = ApplicationDbContextFactory.Create(_currentUserServiceMock.Object);
-            _repo= new DoorRepository(_dbContext, _currentUserServiceMock.Object);
+            _currentUserContextMock = new Mock<ICurrentUserContext>();
+            _currentUserContextMock.Setup(m => m.GarageId).Returns(1);
+            _dbContext = ApplicationDbContextFactory.Create(_currentUserContextMock.Object);
+            _repo= new DoorRepository(_dbContext, _currentUserContextMock.Object);
         }
 
         [Fact]
         public void ShouldCheckForRequiredInjects()
         {
             Assert.Throws<ArgumentNullException>(() => new DoorRepository(_dbContext, null));
-            Assert.Throws<ArgumentNullException>(() => new DoorRepository(null, _currentUserServiceMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new DoorRepository(null, _currentUserContextMock.Object));
         }
 
         [Fact]

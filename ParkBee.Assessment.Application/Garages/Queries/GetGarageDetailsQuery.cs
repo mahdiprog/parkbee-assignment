@@ -18,13 +18,13 @@ namespace ParkBee.Assessment.Application.Garages.Queries
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrentUserContext _currentUserContext;
 
-        public GetGarageDetailsQueryHandler( IApplicationDbContext dbContext, IMapper mapper, ICurrentUserService currentUserService)
+        public GetGarageDetailsQueryHandler( IApplicationDbContext dbContext, IMapper mapper, ICurrentUserContext currentUserContext)
         {
             _dbContext = dbContext;
             _mapper = mapper;
-            _currentUserService = currentUserService;
+            _currentUserContext = currentUserContext;
         }
 
         public async Task<GarageDto> Handle(GetGarageDetailsQuery request, CancellationToken cancellationToken)
@@ -32,9 +32,9 @@ namespace ParkBee.Assessment.Application.Garages.Queries
             // get the garage which current user is it's owner
             var garage = await _dbContext.Garages.Include(g => g.Doors)
                 .ThenInclude(d => d.DoorStatuses.OrderByDescending(p => p.ChangeDate).Take(1))
-                .FirstOrDefaultAsync(g => g.GarageId == _currentUserService.GarageId, cancellationToken: cancellationToken);
+                .FirstOrDefaultAsync(g => g.GarageId == _currentUserContext.GarageId, cancellationToken: cancellationToken);
             if (garage == null)
-                throw new NotFoundException($"Garage with Id {_currentUserService.GarageId} not found");
+                throw new NotFoundException($"Garage with Id {_currentUserContext.GarageId} not found");
 
             return _mapper.Map<GarageDto>(garage);
         }
