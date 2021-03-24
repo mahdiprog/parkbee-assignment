@@ -15,22 +15,24 @@ namespace ParkBee.Assessment.Application.Garages.Commands
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IDoorCheckService _doorCheckService;
+        private readonly ICurrentUserContext _currentUserContext;
 
-        public RefreshDoorStatusCommandHandler( IApplicationDbContext dbContext, IDoorCheckService doorCheckService)
+        public RefreshDoorStatusCommandHandler( IApplicationDbContext dbContext, IDoorCheckService doorCheckService, ICurrentUserContext currentUserContext)
         {
             _dbContext = dbContext?? throw new ArgumentNullException(nameof(dbContext));
             _doorCheckService = doorCheckService?? throw new ArgumentNullException(nameof(doorCheckService));
+            _currentUserContext = currentUserContext?? throw new ArgumentNullException(nameof(currentUserContext));
         }
 
         public async Task<bool> Handle(RefreshDoorStatusCommand request, CancellationToken cancellationToken)
         {
             // get door with latest status included in
-            var door = await _dbContext.DoorRepository.GetDoorWithLatestStatus(request.DoorId);
+            var door = await _dbContext.DoorRepository.GetDoorWithLatestStatus(request.DoorId, _currentUserContext.GarageId);
             if (door == null)
                 throw new NotFoundException($"Door with Id {request.DoorId} not found");
             // check if door is online
             var isOnline = await _doorCheckService.GetDoorStatus(door);
-            await _dbContext.DoorRepository.ChangeDoorStatus(door.DoorId, isOnline);
+            await _dbContext.DoorRepository.ChangeDoorStatus(door, isOnline);
             return isOnline;
         }
     }

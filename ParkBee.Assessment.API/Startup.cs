@@ -17,8 +17,13 @@ using ParkBee.Assessment.Infra;
 using ParkBee.Assessment.Infra.Persistence;
 using Swashbuckle.AspNetCore.Swagger;
 using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ParkBee.Assessment.API.Services;
+using ParkBee.Assessment.Application.Garages.Queries;
 using ParkBee.Assessment.Application.Interfaces;
+using ParkBee.Assessment.Application.Services;
+using ParkBee.Assessment.Application.Services.CronJobs;
 
 namespace ParkBee.Assessment.API
 {
@@ -34,8 +39,20 @@ namespace ParkBee.Assessment.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication(Configuration);
-            services.AddInfrastructure(Configuration);
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            services.AddMediatR(typeof(GetGarageDetailsQuery).Assembly);
+            services.AddScoped<IDoorCheckService, DoorCheckService>();
+            // Add Cron jobs
+            services.AddCronJob<GetDoorsStatusesCronJob>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = Configuration["CronJobExpression"];
+            });
+            services.AddScoped<IPingService, PingService>();
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("parkbee"));
+            //options.UseSqlServer(configuration.GetConnectionString("ParkBeeDbContext")));
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             //services.AddValidatorsFromAssemblyContaining<>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

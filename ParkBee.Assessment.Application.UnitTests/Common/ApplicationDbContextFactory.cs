@@ -10,13 +10,13 @@ namespace ParkBee.Assessment.Application.UnitTests.Common
 {
     public class ApplicationDbContextFactory
     {
-        public static ApplicationDbContext Create(ICurrentUserContext currentUserService)
+        public static ApplicationDbContext Create()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            var context = new ApplicationDbContext(options, currentUserService);
+            var context = new ApplicationDbContext(options );
 
             context.Database.EnsureCreated();
             context.Garages.RemoveRange(context.Garages);

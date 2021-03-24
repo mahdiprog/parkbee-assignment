@@ -22,23 +22,20 @@ namespace ParkBee.Assessment.Application.UnitTests.Repositories
         private const int GarageId = 1;
 
         private readonly ApplicationDbContext _dbContext;
-        private readonly Mock<ICurrentUserContext> _currentUserContextMock;
         private readonly IDoorRepository _repo;
 
 
         public DoorRepositoryTests()
         {
-            _currentUserContextMock = new Mock<ICurrentUserContext>();
-            _currentUserContextMock.Setup(m => m.GarageId).Returns(1);
-            _dbContext = ApplicationDbContextFactory.Create(_currentUserContextMock.Object);
-            _repo= new DoorRepository(_dbContext, _currentUserContextMock.Object);
+            
+            _dbContext = ApplicationDbContextFactory.Create();
+            _repo= new DoorRepository(_dbContext);
         }
 
         [Fact]
         public void ShouldCheckForRequiredInjects()
         {
-            Assert.Throws<ArgumentNullException>(() => new DoorRepository(_dbContext, null));
-            Assert.Throws<ArgumentNullException>(() => new DoorRepository(null, _currentUserContextMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new DoorRepository(null));
         }
 
         [Fact]
@@ -52,13 +49,13 @@ namespace ParkBee.Assessment.Application.UnitTests.Repositories
         [Fact]
         public async Task GetDoorWithLatestStatus_ShouldReturnOnlyAccessibleDoors()
         {
-           var result = await _repo.GetDoorWithLatestStatus(3);
+           var result = await _repo.GetDoorWithLatestStatus(3,GarageId);
             Assert.Null(result);
         }
         [Fact]
         public async Task GetDoorWithLatestStatus_ShouldReturnLatestStatus()
         {
-            var result = await _repo.GetDoorWithLatestStatus(1);
+            var result = await _repo.GetDoorWithLatestStatus(1, GarageId);
             Assert.NotNull(result);
             Assert.True(result.DoorStatuses.First().IsOnline);
         }

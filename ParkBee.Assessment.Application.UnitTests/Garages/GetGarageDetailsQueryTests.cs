@@ -27,7 +27,7 @@ namespace ParkBee.Assessment.Application.UnitTests.Garages
         {
             _currentUserServiceMock = new Mock<ICurrentUserContext>();
             _currentUserServiceMock.Setup(m => m.GarageId).Returns(GarageId);
-            _dbContext = ApplicationDbContextFactory.Create(_currentUserServiceMock.Object);
+            _dbContext = ApplicationDbContextFactory.Create();
 
             var configurationProvider = new MapperConfiguration(cfg =>
             {

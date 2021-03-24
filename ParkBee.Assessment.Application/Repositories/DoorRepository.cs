@@ -11,12 +11,10 @@ namespace ParkBee.Assessment.Application.Repositories
     public class DoorRepository : IDoorRepository
     {
         private readonly IApplicationDbContext _dbContext;
-        private readonly ICurrentUserContext _currentUserContext;
 
-        public DoorRepository(IApplicationDbContext dbContext, ICurrentUserContext currentUserContext)
+        public DoorRepository(IApplicationDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _currentUserContext = currentUserContext ?? throw new ArgumentNullException(nameof(currentUserContext));
         }
         /// <summary>
         /// Get All available doors
@@ -31,19 +29,19 @@ namespace ParkBee.Assessment.Application.Repositories
         /// </summary>
         /// <param name="doorId"></param>
         /// <returns>Door with it's last status</returns>
-        public async Task<Door> GetDoorWithLatestStatus(int doorId)
+        public async Task<Door> GetDoorWithLatestStatus(int doorId, int garageId)
         {
             return await _dbContext.Doors.Include(d => d.DoorStatuses.OrderByDescending(p => p.ChangeDate).Take(1))
-                .FirstOrDefaultAsync(d => d.DoorId == doorId && d.Garage.GarageId == _currentUserContext.GarageId);
+                .FirstOrDefaultAsync(d => d.DoorId == doorId && d.Garage.GarageId ==garageId);
         }
         /// <summary>
         /// Set door status
         /// </summary>
         /// <param name="doorId"></param>
         /// <param name="isOnline"></param>
-        public async Task ChangeDoorStatus(int doorId, bool isOnline)
+        public async Task ChangeDoorStatus(int doorId, int garageId, bool isOnline)
         {
-            var door = await GetDoorWithLatestStatus(doorId);
+            var door = await GetDoorWithLatestStatus(doorId, garageId);
             if (door != null)
                 await ChangeDoorStatus(door, isOnline);
         }

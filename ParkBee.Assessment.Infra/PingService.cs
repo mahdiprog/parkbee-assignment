@@ -13,23 +13,17 @@ namespace ParkBee.Assessment.Infra
     public class PingService : IPingService
     {
 
-        private readonly int _retryCount;
-        private readonly TimeSpan _interval;
         private readonly Ping _pingSender;
-        public PingService(IConfiguration configuration)
+        public PingService()
         {
-            if(!TimeSpan.TryParse(configuration["Retry:Interval"], out _interval))
-                _interval = TimeSpan.FromSeconds(2);
-            if(!Int32.TryParse(configuration["Retry:Count"], out _retryCount))
-                _retryCount = 2;
             _pingSender = new Ping ();
 
         }
 
-        public async Task<bool> SendWithRetry(IPAddress ip)
+        public async Task<bool> SendWithRetry(IPAddress ip, int retryCount, TimeSpan interval)
         {
             var exceptions = new List<Exception>();
-            for (int attempted = 0; attempted < _retryCount; attempted++)
+            for (int attempted = 0; attempted < retryCount; attempted++)
             {
                 try
                 {
@@ -38,7 +32,7 @@ namespace ParkBee.Assessment.Infra
                     if (successful)
                         return successful;
                     // Wait to retry the operation.
-                    await Task.Delay(_interval);
+                    await Task.Delay(interval);
                 }
                 catch (Exception ex)
                 {

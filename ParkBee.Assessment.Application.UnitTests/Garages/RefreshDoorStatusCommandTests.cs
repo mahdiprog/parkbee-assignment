@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Moq;
 using ParkBee.Assessment.Application.Exceptions;
-using ParkBee.Assessment.Application.Garages;
 using ParkBee.Assessment.Application.Garages.Commands;
 using ParkBee.Assessment.Application.Interfaces;
-using ParkBee.Assessment.Application.Repositories;
 using ParkBee.Assessment.Application.UnitTests.Common;
 using ParkBee.Assessment.Domain.Models;
 using ParkBee.Assessment.Infra.Persistence;
@@ -22,12 +16,13 @@ namespace ParkBee.Assessment.Application.UnitTests.Garages
 
         private readonly ApplicationDbContext _dbContext;
         private readonly Mock<IDoorCheckService> _doorCheckServiceMock;
+        private readonly Mock<ICurrentUserContext> _currentUserContextMock;
 
         public RefreshDoorStatusCommandTests()
         {
-            var currentUserContextMock = new Mock<ICurrentUserContext>();
-            currentUserContextMock.Setup(m => m.GarageId).Returns(1);
-            _dbContext = ApplicationDbContextFactory.Create(currentUserContextMock.Object);
+            _currentUserContextMock = new Mock<ICurrentUserContext>();
+            _currentUserContextMock.Setup(m => m.GarageId).Returns(1);
+            _dbContext = ApplicationDbContextFactory.Create();
 
             _doorCheckServiceMock = new Mock<IDoorCheckService>(); 
         }
@@ -39,8 +34,9 @@ namespace ParkBee.Assessment.Application.UnitTests.Garages
         [Fact]
         public void ShouldCheckForRequiredInjects()
         {
-            Assert.Throws<ArgumentNullException>(() => new RefreshDoorStatusCommandHandler(_dbContext, null));
-            Assert.Throws<ArgumentNullException>(() => new RefreshDoorStatusCommandHandler(null, _doorCheckServiceMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new RefreshDoorStatusCommandHandler(_dbContext, _doorCheckServiceMock.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new RefreshDoorStatusCommandHandler(null, _doorCheckServiceMock.Object, _currentUserContextMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new RefreshDoorStatusCommandHandler(_dbContext, _doorCheckServiceMock.Object,null));
         }
         [Fact]
         public async Task Handle_GivenValidRequest_ShouldReturnDoorStatus()
@@ -48,7 +44,7 @@ namespace ParkBee.Assessment.Application.UnitTests.Garages
             // Arrange
            _doorCheckServiceMock.Setup(cs => cs.GetDoorStatus(It.Is<Door>(d => d.DoorId == 1))).ReturnsAsync(false);
             _doorCheckServiceMock.Setup(cs => cs.GetDoorStatus(It.Is<Door>(d => d.DoorId == 2))).ReturnsAsync(true);
-            var sut = new RefreshDoorStatusCommandHandler(_dbContext, _doorCheckServiceMock.Object);
+            var sut = new RefreshDoorStatusCommandHandler(_dbContext, _doorCheckServiceMock.Object,_currentUserContextMock.Object);
 
             // Act
             // check if throws exception on door not exists

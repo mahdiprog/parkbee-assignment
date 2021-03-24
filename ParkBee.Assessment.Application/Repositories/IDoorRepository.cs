@@ -6,9 +6,9 @@ namespace ParkBee.Assessment.Application.Repositories
 {
     public interface IDoorRepository
     {
-        Task ChangeDoorStatus(int doorId, bool isOnline);
+        Task ChangeDoorStatus(int doorId, int garageId, bool isOnline);
         Task<IReadOnlyList<Door>> GetAllDoors();
-        Task<Door> GetDoorWithLatestStatus(int doorId);
+        Task<Door> GetDoorWithLatestStatus(int doorId, int garageId);
         Task ChangeDoorStatus(Door door, bool isOnline);
     }
 }

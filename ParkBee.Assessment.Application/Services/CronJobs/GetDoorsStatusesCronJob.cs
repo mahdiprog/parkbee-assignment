@@ -37,7 +37,7 @@ namespace ParkBee.Assessment.Application.Services.CronJobs
             foreach (var door in doors)
             {
                 var isOnline = await doorCheckService.GetDoorStatus(door);
-                await dbContext.DoorRepository.ChangeDoorStatus(door.DoorId, isOnline);
+                await dbContext.DoorRepository.ChangeDoorStatus(door, isOnline);
             }
         }
 

@@ -6,19 +6,9 @@ namespace ParkBee.Assessment.Infra.Persistence
 {
     public partial class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        private readonly ICurrentUserContext _currentUserContext;
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-        }
-
-        public ApplicationDbContext(
-            DbContextOptions<ApplicationDbContext> options, 
-            ICurrentUserContext currentUserContext)
-            : base(options)
-        {
-            _currentUserContext = currentUserContext;
         }
 
 
